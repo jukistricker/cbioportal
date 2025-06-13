@@ -12,23 +12,14 @@ import java.util.List;
 import java.util.Set;
 import org.cbioportal.legacy.model.Sample;
 import org.cbioportal.legacy.persistence.SampleRepository;
-import org.cbioportal.legacy.service.CancerTypeService;
 import org.cbioportal.legacy.service.VirtualStudyService;
-import org.cbioportal.legacy.service.impl.VirtualStudyServiceImpl;
-import org.cbioportal.legacy.service.util.SessionServiceRequestHandler;
 import org.cbioportal.legacy.web.parameter.VirtualStudy;
 import org.cbioportal.legacy.web.parameter.VirtualStudyData;
 import org.cbioportal.legacy.web.parameter.VirtualStudySamples;
-import org.cbioportal.legacy.web.util.StudyViewFilterApplier;
 import org.junit.Test;
 
 public class VSAwareSampleRepositoryTests {
-  final VirtualStudyService virtualStudyService =
-      spy(
-          new VirtualStudyServiceImpl(
-              mock(CancerTypeService.class),
-              mock(SessionServiceRequestHandler.class),
-              mock(StudyViewFilterApplier.class)));
+  final VirtualStudyService virtualStudyService = mock(VirtualStudyService.class);
   final SampleRepository sampleRepository = mock(SampleRepository.class);
   final VSAwareSampleRepository testee =
       new VSAwareSampleRepository(virtualStudyService, sampleRepository);
