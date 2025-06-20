@@ -55,6 +55,7 @@ public class VSAwareClinicalAttributeRepository implements ClinicalAttributeRepo
                             + " has different number of study ids and sample ids");
                   }
                   return clinicalAttributeRepository
+                      // we drop clinical attributes that have no values here
                       .getClinicalAttributeCountsBySampleIds(studyIds, sampleIds)
                       .stream()
                       .filter(c -> c.getCount() > 0)
