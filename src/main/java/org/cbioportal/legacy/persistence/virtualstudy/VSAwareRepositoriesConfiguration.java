@@ -5,6 +5,7 @@ import org.cbioportal.legacy.persistence.ClinicalAttributeRepository;
 import org.cbioportal.legacy.persistence.ClinicalDataRepository;
 import org.cbioportal.legacy.persistence.GenericAssayRepository;
 import org.cbioportal.legacy.persistence.MolecularProfileRepository;
+import org.cbioportal.legacy.persistence.PatientRepository;
 import org.cbioportal.legacy.persistence.SampleRepository;
 import org.cbioportal.legacy.persistence.StudyRepository;
 import org.cbioportal.legacy.service.VirtualStudyService;
@@ -71,5 +72,11 @@ public class VSAwareRepositoriesConfiguration {
   public VSAwareAlterationRepository alterationRepository(
       AlterationRepository alterationRepository) {
     return new VSAwareAlterationRepository(virtualStudyService, alterationRepository);
+  }
+
+  @Primary
+  @Bean
+  public VSAwarePatientRepository patientRepository(PatientRepository patientRepository) {
+    return new VSAwarePatientRepository(virtualStudyService, patientRepository);
   }
 }

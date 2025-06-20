@@ -324,6 +324,7 @@ public class VSAwareSampleRepository implements SampleRepository {
     return materializedStudyId + "_" + materializedSampleId;
   }
 
+  // TODO deduplicate this method here and in PatientRepository
   private static String calculateVirtualPatientId(
       String materializedStudyId, String materializedPatientId) {
     return materializedStudyId + "_" + materializedPatientId;
