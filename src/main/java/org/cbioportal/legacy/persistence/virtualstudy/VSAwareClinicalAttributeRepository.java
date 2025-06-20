@@ -13,7 +13,6 @@ import org.cbioportal.legacy.persistence.ClinicalAttributeRepository;
 import org.cbioportal.legacy.service.VirtualStudyService;
 import org.cbioportal.legacy.web.parameter.Direction;
 import org.cbioportal.legacy.web.parameter.Projection;
-import org.cbioportal.legacy.web.parameter.VirtualStudySamples;
 import org.cbioportal.legacy.web.parameter.sort.ClinicalAttributeSortBy;
 
 public class VSAwareClinicalAttributeRepository implements ClinicalAttributeRepository {
@@ -43,13 +42,18 @@ public class VSAwareClinicalAttributeRepository implements ClinicalAttributeRepo
                   CancerStudy virtualCancerStudy = virtualStudyService.toCancerStudy(virtualStudy);
                   List<String> studyIds =
                       virtualStudy.getData().getStudies().stream()
-                          .map(VirtualStudySamples::getId)
+                          .flatMap(s -> s.getSamples().stream().map(s1 -> s.getId()))
                           .collect(Collectors.toList());
                   List<String> sampleIds =
                       virtualStudy.getData().getStudies().stream()
                           .flatMap(s -> s.getSamples().stream())
                           .collect(Collectors.toList());
-                  // TODO check if len(studyIds) == len(sampleIds)
+                  if (studyIds.size() != sampleIds.size()) {
+                    throw new IllegalStateException(
+                        "Virtual study "
+                            + virtualStudy.getId()
+                            + " has different number of study ids and sample ids");
+                  }
                   return clinicalAttributeRepository
                       .getClinicalAttributeCountsBySampleIds(studyIds, sampleIds)
                       .stream()
