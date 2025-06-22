@@ -3,6 +3,7 @@ package org.cbioportal.legacy.persistence.virtualstudy;
 import org.cbioportal.legacy.persistence.AlterationRepository;
 import org.cbioportal.legacy.persistence.ClinicalAttributeRepository;
 import org.cbioportal.legacy.persistence.ClinicalDataRepository;
+import org.cbioportal.legacy.persistence.ClinicalEventRepository;
 import org.cbioportal.legacy.persistence.GenericAssayRepository;
 import org.cbioportal.legacy.persistence.MolecularProfileRepository;
 import org.cbioportal.legacy.persistence.PatientRepository;
@@ -78,5 +79,14 @@ public class VSAwareRepositoriesConfiguration {
   @Bean
   public VSAwarePatientRepository patientRepository(PatientRepository patientRepository) {
     return new VSAwarePatientRepository(virtualStudyService, patientRepository);
+  }
+
+  @Primary
+  @Bean
+  public VSAwareClinicalEventRepository clinicalEventRepository(
+      ClinicalEventRepository clinicalEventRepository,
+      VSAwarePatientRepository vsAwarePatientRepository) {
+    return new VSAwareClinicalEventRepository(
+        virtualStudyService, clinicalEventRepository, vsAwarePatientRepository);
   }
 }
